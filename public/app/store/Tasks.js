@@ -6,7 +6,17 @@ Ext.define('TodoTxt.store.Tasks', {
 
     autoLoad: true,
     autoSync: false,
-    fields: ['id', 'priority', 'content', 'context', 'project'],
+
+    //fields: ['id', 'priority', 'content', 'context', 'project'],
+    fields: [
+        'text',
+        'priority',
+        'complete',
+        'completed',
+        'date',
+        'contexts',
+        'projects'
+    ],
 
     proxy: {
         type: 'rest',

@@ -25,8 +25,8 @@ Ext.define('TodoTxt.view.Tasks', {
                 flex: 1
             },
             {
-                header: 'Content',
-                dataIndex: 'content',
+                header: 'Text',
+                dataIndex: 'text',
                 editor: {
                     xtype: 'textfield',
                     allowBlank: false
@@ -34,8 +34,8 @@ Ext.define('TodoTxt.view.Tasks', {
                 flex: 1
             },
             {
-                header: 'Context',
-                dataIndex: 'context',
+                header: 'Contexts',
+                dataIndex: 'contexts',
                 editor: {
                     xtype: 'textfield',
                     allowBlank: true
@@ -43,8 +43,8 @@ Ext.define('TodoTxt.view.Tasks', {
                 flex: 1
             },
             {
-                header: 'Project',
-                dataIndex: 'project',
+                header: 'Projects',
+                dataIndex: 'projects',
                 editor: {
                     xtype: 'textfield',
                     allowBlank: true

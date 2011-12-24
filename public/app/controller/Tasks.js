@@ -21,8 +21,8 @@ Ext.define("TodoTxt.controller.Tasks", {
             'taskseditor': {
                 render: this.onEditorRender,
                 edit: this.afterTaskEdit,
-                movieEdit: this.onTaskEdit,
-                movieDelete: this.onTaskDelete
+                taskEdit: this.onTaskEdit,
+                taskDelete: this.onTaskDelete
             },
             'taskseditor button': {
                 click: this.addTask
