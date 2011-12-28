@@ -6,11 +6,21 @@
 Ext.define('TodoTxt.view.Viewport', {
     extend: 'Ext.container.Viewport',
 
-    layout: 'fit',
+    layout: 'border',
 
     items: [{
-        xtype: 'panel',
-        title: 'All tasks',
+        region: 'north',
+        xtype: 'toolbar', height: 100, padding: 10,
+        items: [{
+            xtype: 'container', bodyPadding: 10,
+            html: '<img src="images/todotxt.png" width="64" height="64" />'
+        }, {
+            xtype: 'tbtext', style: 'font-size: 14px; font-weight: bold;',
+            text: 'Todo.txt sample application'
+        }]
+    }, {
+        region: 'center',
+        bodyPadding: 50,
         items: [{
             xtype: 'taskseditor'
         }]

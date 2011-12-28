@@ -6,8 +6,9 @@ Ext.define('TodoTxt.store.Tasks', {
 
     autoLoad: true,
     autoSync: false,
+    sorters: ['priority', 'content', 'projects', 'contexts'],
+    //groupField: 'projects',
 
-    //fields: ['id', 'priority', 'content', 'context', 'project'],
     fields: [
         'text',
         'priority',

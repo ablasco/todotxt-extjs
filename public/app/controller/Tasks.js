@@ -47,8 +47,7 @@ Ext.define("TodoTxt.controller.Tasks", {
 
         // add blank item to store -- will automatically add new row to grid
         newTask = s.add({
-            title: '',
-            year: ''
+            text: ''
         })[0];
 
         this.rowEditor.startEdit(newTask, this.tasksEditor.columns[0]);

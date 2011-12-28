@@ -1,4 +1,6 @@
-(A) thank Mom for the meatballs +PeaceAndLove +Family @phone
-(B) schedule Goodwill pickup +GarageSale
-post signs around the neighborhood... +GarageSale @home
+(A) thank Mom for the meatballs @phone
+(A) Call Mom +Family +PeaceLoveAndHappiness @iphone @phone
+(B) schedule Goodwill pickup +GarageSale @phone
+(C) 2011-06-01 post signs around the neighborhood +GarageSale @home
 x 2011-12-24 Eskimo pies @shopping
+x 2011-03-02 2011-03-01 Review Tim's pull request +TodoTxtTouch @github
