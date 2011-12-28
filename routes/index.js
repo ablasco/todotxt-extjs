@@ -1,9 +1,8 @@
 var fs = require('fs'),
     _ = require('underscore'),
-    file = '/home/ablasco/Dropbox/todo/todo2.txt',
+    cfg = require('../config'),
     TodoTxt = require('../jsTodoTxt')
 
-//require('date-utils')
 
 /**
  * Parses file contents into an array of items.
@@ -60,7 +59,7 @@ exports.index = function(req, res) {
 
 
 exports.list = function(req, res) {
-    fs.readFile(file, "ascii", function(err, data) {
+    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
         if (err) throw err;
 
         res.json({
@@ -75,15 +74,21 @@ exports.add = function(req, res) {
     var item = updateModel(req.body),
         txtData = item.toString();
 
-    fs.open(file, 'a', 666, function(err, id) {
-        fs.write(id, txtData + "\n", null, 'utf8', function(err) {
-            if (err) throw err;
-            //console.log("write to file");
-            fs.close(id, function() {
-                //console.log("file closed");
-                res.json({
-                    success: true,
-                    data: item
+    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
+        if (err) throw err;
+        var nTasks = data.split("\n").length;
+        item.id = nTasks;
+
+        fs.open(cfg.fs.file, 'a', 666, function(err, fd) {
+            fs.write(fd, txtData + "\n", null, 'utf8', function(err) {
+                if (err) throw err;
+                //console.log("write to file");
+                fs.close(fd, function() {
+                    //console.log("file closed");
+                    res.json({
+                        success: true,
+                        data: item
+                    });
                 });
             });
         });
@@ -98,10 +103,10 @@ exports.update = function(req, res) {
         offset = 0,
         position = null;
 
-    fs.readFile(file, "ascii", function(err, data) {
+    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
         if (err) throw err;
 
-        fs.open(file, "w+", function(err, fd) {
+        fs.open(cfg.fs.file, "w+", function(err, fd) {
             if (err) throw err;
 
             _.each(parseFile(data), function(item, idx) {
@@ -137,10 +142,10 @@ exports.del = function(req, res) {
         offset = 0,
         position = null;
 
-    fs.readFile(file, "ascii", function(err, data) {
+    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
         if (err) throw err;
 
-        fs.open(file, "w+", function(err, fd) {
+        fs.open(cfg.fs.file, "w+", function(err, fd) {
             if (err) throw err;
 
             _.each(parseFile(data), function(item, idx) {
