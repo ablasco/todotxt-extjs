@@ -1,8 +1,24 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.gradient {
+    background: #b4ddb4; /* Old browsers */
+    background: -moz-linear-gradient(top,  #b4ddb4 0%, #83c783 5%, #52b152 15%, #008a00 30%, #005700 50%, #002400 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b4ddb4), color-stop(5%,#83c783), color-stop(15%,#52b152), color-stop(30%,#008a00), color-stop(50%,#005700), color-stop(100%,#002400)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #b4ddb4 0%,#83c783 5%,#52b152 15%,#008a00 30%,#005700 50%,#002400 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #b4ddb4 0%,#83c783 5%,#52b152 15%,#008a00 30%,#005700 50%,#002400 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #b4ddb4 0%,#83c783 5%,#52b152 15%,#008a00 30%,#005700 50%,#002400 100%); /* IE10+ */
+    background: linear-gradient(top,  #b4ddb4 0%,#83c783 5%,#52b152 15%,#008a00 30%,#005700 50%,#002400 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4ddb4', endColorstr='#002400',GradientType=0 ); /* IE6-9 */
 }
 
-a {
-  color: #00B7FF;
+.x-toolbar-text.app-title {
+    color: #FFF !important;
+    font-size: 28px;
+    padding-left: 0.5em;
 }
+
+.completed {text-decoration: line-through;}
+
+.priority-A, .priority-B, .priority-C, .priority-D {font-weight: bold;}
+.priority-A {color: red;}
+.priority-B {color: blue;}
+.priority-C {color: green;}
+.priority-D {color: #ee82ee;}

@@ -4,24 +4,16 @@
 Ext.define("TodoTxt.controller.Tasks", {
     extend: 'Ext.app.Controller',
 
-    models: [
-        'Task'
-    ],
-
-    stores: [
-        'Tasks'
-    ],
-
-    views:  [
-        'Tasks'
-    ],
+    models: ['Task'],
+    stores: ['Tasks', 'Priorities'],
+    views:  ['Tasks'],
 
     init: function () {
         this.control({
             'taskseditor': {
                 render: this.onEditorRender,
-                edit: this.afterTaskEdit,
                 taskEdit: this.onTaskEdit,
+                edit: this.afterTaskEdit,
                 taskDelete: this.onTaskDelete
             },
             'taskseditor button': {
@@ -36,9 +28,26 @@ Ext.define("TodoTxt.controller.Tasks", {
         this.rowEditor = this.tasksEditor.rowEditor;
     },
 
+    onTaskEdit: function (evtData) {
+        var s = this.getStore('Tasks');
+        var record = s.getAt(evtData.rowIndex);
+        if (record) {
+            this.rowEditor.startEdit(record, this.tasksEditor.columns[evtData.colIndex]);
+        }
+    },
+
     afterTaskEdit: function () {
         var s = this.getStore('Tasks');
         s.sync();
+    },
+
+    onTaskDelete: function (evtData) {
+        var s = this.getStore('Tasks');
+        var record = s.getAt(evtData.rowIndex);
+        if (record) {
+            s.remove(record);
+            s.sync();
+        }
     },
 
     addTask: function () {
@@ -46,27 +55,7 @@ Ext.define("TodoTxt.controller.Tasks", {
             s = this.getStore('Tasks');
 
         // add blank item to store -- will automatically add new row to grid
-        newTask = s.add({
-            text: ''
-        })[0];
-
+        newTask = s.add({text: ''})[0];
         this.rowEditor.startEdit(newTask, this.tasksEditor.columns[0]);
-    },
-
-    onTaskEdit: function (evtData) {
-        var s = this.getStore('Tasks');
-        var record = s.getAt(evtData.rowIndex);
-        if(record) {
-            this.rowEditor.startEdit(record, this.tasksEditor.columns[evtData.colIndex]);
-        }
-    },
-
-    onTaskDelete: function (evtData) {
-        var s = this.getStore('Tasks');
-        var record = s.getAt(evtData.rowIndex);
-        if(record) {
-            s.remove(record);
-            s.sync();
-        }
     }
 });

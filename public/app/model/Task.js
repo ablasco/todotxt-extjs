@@ -14,37 +14,13 @@ Ext.define('TodoTxt.model.Task', {
 
     idProperty: 'id',
     fields: [
-        {
-            name: 'id',
-            type: 'string'
-        },
-        {
-            name: 'text',
-            type: 'string'
-        },
-        {
-            name: 'priority',
-            type: 'string'
-        },
-        {
-            name: 'complete',
-            type: 'string'
-        },
-        {
-            name: 'completed',
-            type: 'string'
-        },
-        {
-            name: 'date',
-            type: 'string'
-        },
-        {
-            name: 'contexts',
-            type: 'array'
-        },
-        {
-            name: 'projects',
-            type: 'array'
-        }
+        {name: 'id',         type: 'string'},
+        {name: 'text',       type: 'string'},
+        {name: 'priority',   type: 'string'},
+        {name: 'complete',   type: 'boolean'},
+        {name: 'completed',  type: 'string'},
+        {name: 'date',       type: 'string'},
+        {name: 'contexts',   type: 'array'},
+        {name: 'projects',   type: 'array'}
     ]
 });

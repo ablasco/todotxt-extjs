@@ -10,13 +10,13 @@ Ext.define('TodoTxt.view.Viewport', {
 
     items: [{
         region: 'north',
-        xtype: 'toolbar', height: 100, padding: 10,
+        xtype: 'toolbar', height: 80, padding: 7, cls: 'gradient',
         items: [{
-            xtype: 'container', bodyPadding: 10,
+            xtype: 'container', bodyPadding: 7,
             html: '<img src="images/todotxt.png" width="64" height="64" />'
         }, {
-            xtype: 'tbtext', style: 'font-size: 14px; font-weight: bold;',
-            text: 'Todo.txt sample application'
+            xtype: 'tbtext', cls: 'app-title',
+            text: 'Todo.txt editor'
         }]
     }, {
         region: 'center',

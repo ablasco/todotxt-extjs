@@ -1,5 +1,5 @@
-(A) thank Mom for the meatballs @phone
-(A) Call Mom +Family +PeaceLoveAndHappiness @iphone @phone
+(D) thank Mom for the meatballs +Family @phone
+(A) Call Mom +Family +PeaceLoveAndHappiness @android @phone
 (B) schedule Goodwill pickup +GarageSale @phone
 (C) 2011-06-01 post signs around the neighborhood +GarageSale @home
 x 2011-12-24 Eskimo pies @shopping
