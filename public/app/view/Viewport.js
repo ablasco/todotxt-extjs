@@ -16,7 +16,14 @@ Ext.define('TodoTxt.view.Viewport', {
             html: '<img src="images/todotxt.png" width="64" height="64" />'
         }, {
             xtype: 'tbtext', cls: 'app-title',
-            text: 'Todo.txt editor'
+            text: 'Todo.txt task editor'
+        }]
+    }, {
+        region: 'west', width: 200,
+        title: 'Task organization',
+        collapsible: true,
+        items: [{
+            xtype: 'taskstree'
         }]
     }, {
         region: 'center',

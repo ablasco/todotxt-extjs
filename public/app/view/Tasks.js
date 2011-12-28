@@ -54,7 +54,7 @@ Ext.define('TodoTxt.view.Tasks', {
         this.addEvents(['taskEdit', 'taskDelete']);
         this.columns = [{
             header: 'Done', dataIndex: 'complete',
-            flex: 0.5, renderer: rndBoolean,
+            flex: 0.5, hidden: true, renderer: rndBoolean,
             editor: {
                 xtype: 'checkbox', allowBlank: true
             }
