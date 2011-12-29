@@ -22,5 +22,15 @@ Ext.define('TodoTxt.model.Task', {
         {name: 'date',       type: 'string'},
         {name: 'contexts',   type: 'array'},
         {name: 'projects',   type: 'array'}
-    ]
+    ],
+
+    proxy: {
+        type: 'rest',
+        url: '/task/',
+        reader: {
+            type: 'json',
+            root: 'data',
+            successProperty: 'success'
+        }
+    }
 });

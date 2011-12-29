@@ -8,6 +8,7 @@ Ext.define('TodoTxt.view.Tasks', {
     store: 'Tasks',
     selType: 'rowmodel',
     autoScroll: true,
+    autoHeight: true,
     rowEditor: Ext.create('Ext.grid.plugin.RowEditing', {
         clicksToEdit: 2
     }),
@@ -108,7 +109,7 @@ Ext.define('TodoTxt.view.Tasks', {
         }, {
             xtype: 'actioncolumn', width: 64,
             items: [{
-                icon: 'images/tick.png', tooltip: 'Complete',
+                icon: 'images/tick.png', tooltip: 'Toggle Completed',
                 handler: function(grid, rowIndex, colIndex) {
                     taskEditor.fireEvent('taskComplete', {
                         rowIndex: rowIndex,

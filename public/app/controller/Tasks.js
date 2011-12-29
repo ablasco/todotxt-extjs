@@ -52,10 +52,14 @@ Ext.define("TodoTxt.controller.Tasks", {
     },
 
     onTaskComplete: function (evtData) {
-        var s = this.getStore('Tasks');
-        var record = s.getAt(evtData.rowIndex);
+        var s = this.getStore('Tasks'),
+            record = s.getAt(evtData.rowIndex);
+
         if (record) {
-            console.log('mark complete: ', record);
+            var isCompleted = (record.data.complete === false);
+            record.set('complete', isCompleted);
+            record.set('completed', isCompleted? new Date() : null);
+            record.save();
         }
     },
 

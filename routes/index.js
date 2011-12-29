@@ -22,7 +22,7 @@ function parseFile(data) {
             text: t.text,
             priority: t.priority || null,
             complete: t.complete || false,
-            completed: t.completed || null,
+            completed: t.completed? new Date(t.completed) : null,
             date: t.date? new Date(t.date) : null,
             contexts: t.contexts? String(t.contexts).split(',') : null,
             projects: t.projects? String(t.projects).split(',') : null
@@ -33,17 +33,18 @@ function parseFile(data) {
     return tasks;
 }
 
+
 function updateModel(data) {
     var item = new TodoTxt.TodoTxtItem('test');
 
     if (data.id) item.id = data.id;
     item.text = data.text;
-    item.priority = data.priority || null;
-    item.complete = data.complete || false;
-    item.completed = data.completed || null;
-    item.date = data.date? new Date(data.date) : null;
-    item.contexts = data.contexts? String(data.contexts).split(',') : null;
-    item.projects = data.projects? String(data.projects).split(',') : null;
+    item.priority   = data.priority || null;
+    item.complete   = data.complete || false;
+    item.completed  = data.completed? new Date(data.completed) : null;
+    item.date       = data.date? new Date(data.date) : null;
+    item.contexts   = data.contexts? String(data.contexts).split(',') : null;
+    item.projects   = data.projects? String(data.projects).split(',') : null;
 
     return item;
 }
@@ -135,6 +136,7 @@ exports.update = function(req, res) {
     });
 };
 
+
 exports.del = function(req, res) {
     var p = req.body,
         deletedIdx = req.params.id - 1,
@@ -170,9 +172,42 @@ exports.del = function(req, res) {
     });
 };
 
+
 exports.complete = function(req, res) {
-    res.json({
-        success: true,
-        data: {}
+    var updatedIdx = req.params.id - 1,
+        tmpItem, updatedItem,
+        offset = 0,
+        position = null;
+
+    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
+        if (err) throw err;
+
+        fs.open(cfg.fs.file, "w+", function(err, fd) {
+            if (err) throw err;
+
+            _.each(parseFile(data), function(item, idx) {
+                tmpItem = updateModel(item);
+                if (idx === updatedIdx) {
+                    var isCompleted = (tmpItem.complete);
+                    updatedItem = tmpItem;
+                    updatedItem.complete =  isCompleted? false : true;
+                    updatedItem.completed = isCompleted? null : new Date();
+                }
+
+                var buffer = new Buffer(tmpItem.toString() + "\n");
+                fs.write(fd, buffer, offset, buffer.length, position, function(error, written) {
+                    if (error) throw err;
+                    //console.log(idx + ' - Written ' + written + ' bytes to the file: ' + tmpItem.toString());
+                });
+            });
+
+            fs.close(fd, function() {
+                //console.log("file closed");
+                res.json({
+                    success: true,
+                    data: updatedItem
+                });
+            });
+        });
     });
 };
