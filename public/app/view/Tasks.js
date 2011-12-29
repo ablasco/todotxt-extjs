@@ -4,18 +4,29 @@
 Ext.define('TodoTxt.view.Tasks', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.taskseditor',
+
+    store: 'Tasks',
     selType: 'rowmodel',
+    autoScroll: true,
     rowEditor: Ext.create('Ext.grid.plugin.RowEditing', {
         clicksToEdit: 2
     }),
-    store: 'Tasks',
 
     initComponent: function () {
         var taskEditor = this;
         var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
             groupHeaderTpl: 'Group: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})'
         });
-
+/*
+        var selModel = Ext.create('Ext.selection.CheckboxModel', {
+            listeners: {
+                selectionchange: function(sm, selections) {
+                    taskEditor.down('#removeButton').setDisabled(selections.length == 0);
+                }
+            }
+        });
+        this.selModel = selModel;
+*/
         var rndBoolean = function(value) {
             return (value)? '<img src="images/tick.png">' : '';
         };
@@ -40,6 +51,7 @@ Ext.define('TodoTxt.view.Tasks', {
         var rndCategory = function(value, meta, rec, rowIdx, colIdx) {
             var allItems = String(value).split(',') || [],
                 isCompleted = (rec.data.complete)? 'completed' : '',
+                //charPrefix = (colIdx === 6)? '@' : '+',
                 charPrefix = (colIdx === 5)? '@' : '+',
                 output = '<span class="' + isCompleted + '" style="color: #aaa">';
 
@@ -51,7 +63,7 @@ Ext.define('TodoTxt.view.Tasks', {
             return output + '</span>';
         };
 
-        this.addEvents(['taskEdit', 'taskDelete']);
+        this.addEvents(['taskEdit', 'taskDelete', 'taskComplete']);
         this.columns = [{
             header: 'Done', dataIndex: 'complete',
             flex: 0.5, hidden: true, renderer: rndBoolean,
@@ -92,9 +104,18 @@ Ext.define('TodoTxt.view.Tasks', {
             editor: {
                 xtype: 'textfield', allowBlank: true
             }
+/**/
         }, {
-            xtype: 'actioncolumn', width: 50,
+            xtype: 'actioncolumn', width: 64,
             items: [{
+                icon: 'images/tick.png', tooltip: 'Complete',
+                handler: function(grid, rowIndex, colIndex) {
+                    taskEditor.fireEvent('taskComplete', {
+                        rowIndex: rowIndex,
+                        colIndex: colIndex
+                    });
+                }
+            }, {
                 icon: 'images/edit.png', tooltip: 'Edit',
                 handler: function(grid, rowIndex, colIndex) {
                     taskEditor.fireEvent('taskEdit', {
@@ -111,11 +132,12 @@ Ext.define('TodoTxt.view.Tasks', {
                     });
                 }
             }]
+/**/
         }];
 
         this.plugins = [this.rowEditor];
         this.features = [groupingFeature],
-
+/*
         this.dockedItems = [{
             xtype: 'toolbar',
             dock: 'bottom',
@@ -123,10 +145,23 @@ Ext.define('TodoTxt.view.Tasks', {
                 '->',
                 {
                     text: 'Add Task'
+
+//                    id: 'removeButton',
+//                    icon: 'images/delete.png',
+//                    text: 'Delete',
+//                    disabled: true,
+//                    handler: function(cmp) {
+//                        var sm = cmp.up('taskseditor').getSelectionModel();
+//                        Ext.each(sm.selected.items, function(item) {
+//                            taskEditor.fireEvent('taskDelete', {
+//                                rowIndex: item.data.id
+//                            });
+//                        });
+//                    }
                 }
             ]
         }];
-
+*/
         this.callParent(arguments);
     }
 });

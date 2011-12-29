@@ -14,9 +14,10 @@ Ext.define("TodoTxt.controller.Tasks", {
                 render: this.onEditorRender,
                 taskEdit: this.onTaskEdit,
                 edit: this.afterTaskEdit,
-                taskDelete: this.onTaskDelete
+                taskDelete: this.onTaskDelete,
+                taskComplete: this.onTaskComplete
             },
-            'taskseditor button': {
+            '#newTask': {
                 click: this.addTask
             }
         });
@@ -47,6 +48,14 @@ Ext.define("TodoTxt.controller.Tasks", {
         if (record) {
             s.remove(record);
             s.sync();
+        }
+    },
+
+    onTaskComplete: function (evtData) {
+        var s = this.getStore('Tasks');
+        var record = s.getAt(evtData.rowIndex);
+        if (record) {
+            console.log('mark complete: ', record);
         }
     },
 

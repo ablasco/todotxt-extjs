@@ -17,10 +17,16 @@ Ext.define('TodoTxt.view.Viewport', {
         }, {
             xtype: 'tbtext', cls: 'app-title',
             text: 'Todo.txt task editor'
+        }, '->', {
+            id: 'newTask',
+            scale: 'large', width: 42, height: 42,
+            tooltip: 'Add new task',
+            icon: 'images/_plus_big.png'
         }]
     }, {
         region: 'west',
-        width: 200, title: 'Task categories', collapsible: true,
+        title: 'Filter by category',
+        width: 200, collapsible: true,
         items: [{
             xtype: 'taskstree'
         }]
