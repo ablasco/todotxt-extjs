@@ -1,14 +1,15 @@
-### todotxt.net
+todotxt-extjs
+-------------
 
 This is a simple [todo.txt](http://todotxt.com/) GUI implementation with ExtJS4 and node.js.
 As far as I am aware, it is fully complient with [Gina's spec](https://github.com/ginatrapani/todo.txt-touch/wiki/Todo.txt-File-Format).
 
-#### Goals:
+### Goals:
 
  - full compliance with Gina's specs
  - API runs under node.js
 
-#### Current features:
+### Current features:
 
  - feature 1
  - feature 2
@@ -25,8 +26,8 @@ Credits
 
 This application uses the following third-party libraries/assets:
 
-[jsTodoTxt](https://github.com/jmhobbs/jsTodoTxt/)
-[Iconic](http://somerandomdude.com/work/iconic/)
-[FAMFAMFAM Silk icons](http://www.famfamfam.com/lab/icons/silk)
+ - [jsTodoTxt](https://github.com/jmhobbs/jsTodoTxt/)
+ - [Iconic](http://somerandomdude.com/work/iconic/)
+ - [FAMFAMFAM Silk icons](http://www.famfamfam.com/lab/icons/silk)
 
 Thank you all! :)
