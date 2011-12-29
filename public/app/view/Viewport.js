@@ -19,9 +19,8 @@ Ext.define('TodoTxt.view.Viewport', {
             text: 'Todo.txt task editor'
         }]
     }, {
-        region: 'west', width: 200,
-        title: 'Task organization',
-        collapsible: true,
+        region: 'west',
+        width: 200, title: 'Task categories', collapsible: true,
         items: [{
             xtype: 'taskstree'
         }]

@@ -10,8 +10,13 @@ Ext.define('TodoTxt.view.Tree', {
     store: 'TreeNodes',
     rootVisible: false,
     listeners: {
-        'itemclick': function(cmp, rec, item, idx) {
-            //console.log(cmp, rec, item, idx);
+        'itemclick': function(cmp, rec) {
+            var store = Ext.getStore('Tasks'),
+                text = rec.data.text,
+                parentId = rec.data.parentId,
+                id = rec.data.id;
+
+            store.filterByCategory(parentId, id, text);
         }
     },
 

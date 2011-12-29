@@ -64,5 +64,21 @@ Ext.define('TodoTxt.store.Tasks', {
         });
 
         return Ext.Array.sort(Ext.Array.unique(projects));
+    },
+
+    filterByCategory: function(parentId, id, text) {
+        this.clearFilter();
+
+        if (parentId === 'root') {
+            if (id === 'pending') {
+                this.filter('complete', false);
+            } else if (id === 'complete') {
+                this.filter('complete', true);
+            }
+        } else if (parentId === 'nContexts') {
+            this.filter('contexts', text);
+        } else if (parentId === 'nProjects') {
+            this.filter('projects', text);
+        }
     }
 });
