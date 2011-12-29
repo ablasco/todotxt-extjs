@@ -22,3 +22,5 @@
 .priority-B {color: blue;}
 .priority-C {color: green;}
 .priority-D {color: cyan;}
+
+.x-tree-panel .x-grid-row .x-grid-cell-inner {height: 20px;}

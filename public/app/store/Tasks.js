@@ -13,10 +13,10 @@ Ext.define('TodoTxt.store.Tasks', {
             var store = Ext.getStore('TreeNodes');
 
             store.loadNodes('nContexts', this.getContexts(), {
-                leaf: true, icon: 'images/tag.png'
+                leaf: true, icon: 'images/_at.png'
             });
             store.loadNodes('nProjects', this.getProjects(), {
-                leaf: true, icon: 'images/folder.png'
+                leaf: true, icon: 'images/_plus.png'
             });
         }
     },
