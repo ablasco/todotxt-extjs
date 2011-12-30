@@ -97,13 +97,17 @@ Ext.define('TodoTxt.view.Tasks', {
             header: 'Contexts', dataIndex: 'contexts',
             flex: 1, renderer: rndCategory,
             editor: {
-                xtype: 'textfield', allowBlank: true
+                xtype: 'combobox', store: 'Contexts', allowBlank: true,
+                multiSelect: true, delimiter: ',',
+                queryMode: 'local', displayField: 'name', valueField: 'id'
             }
         }, {
             header: 'Projects', dataIndex: 'projects',
             flex: 1, renderer: rndCategory,
             editor: {
-                xtype: 'textfield', allowBlank: true
+                xtype: 'combobox', store: 'Projects', allowBlank: true,
+                multiSelect: true, delimiter: ',',
+                queryMode: 'local', displayField: 'name', valueField: 'id'
             }
 /**/
         }, {

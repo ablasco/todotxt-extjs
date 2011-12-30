@@ -5,7 +5,7 @@ Ext.define("TodoTxt.controller.Tasks", {
     extend: 'Ext.app.Controller',
 
     models: ['Task'],
-    stores: ['TreeNodes', 'Tasks', 'Priorities'],
+    stores: ['TreeNodes', 'Tasks', 'Priorities', 'Contexts', 'Projects'],
     views:  ['Tree', 'Tasks'],
 
     init: function() {

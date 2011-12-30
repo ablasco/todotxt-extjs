@@ -6,20 +6,28 @@ Ext.define('TodoTxt.store.Tasks', {
 
     autoLoad: true,
     autoSync: false,
-    sorters: ['priority', 'content', 'projects', 'contexts'],
     //groupField: 'projects',
-    listeners: {
-        'load': function() {
-            var store = Ext.getStore('TreeNodes');
 
-            store.loadNodes('nContexts', this.getContexts(), {
-                leaf: true, icon: 'images/_at.png'
-            });
-            store.loadNodes('nProjects', this.getProjects(), {
-                leaf: true, icon: 'images/_plus.png'
-            });
+    sorters: [{
+        sorterFn: function(o1, o2) {
+            var getRank = function(o) {
+                var p = o.get('priority');
+                if      (p === 'A') return 1;
+                else if (p === 'B') return 2;
+                else if (p === 'C') return 3;
+                else if (p === 'D') return 4;
+                else return 5;
+            },
+            p1 = getRank(o1),
+            p2 = getRank(o2);
+
+            if (p1 === p2) {
+                return 0;
+            }
+
+            return p1 < p2 ? -1 : 1;
         }
-    },
+    }],
 
     fields: [
         'text',
