@@ -3,6 +3,7 @@ var fs = require('fs'),
     cfg = require('../config'),
     TodoTxt = require('../jsTodoTxt')
 
+var tmpBuffer = [];
 
 /**
  * Parses file contents into an array of items.
@@ -34,6 +35,30 @@ function parseFile(data) {
 }
 
 
+function updateFile() {
+    var offset = 0,
+        position = null;
+
+    fs.open(cfg.fs.file, "w+", function(err, fd) {
+        if (err) throw err;
+
+        _.each(tmpBuffer, function(item, idx) {
+            var tmpItem = updateModel(item),
+                buffer = new Buffer(tmpItem.toString() + "\n");
+
+            fs.write(fd, buffer, offset, buffer.length, position, function(error, written) {
+                if (error) throw err;
+                console.log(idx + ' - Written ' + written + ' bytes to the file: ' + tmpItem.toString());
+            });
+        });
+
+        fs.close(fd, function() {
+            console.log('File closed');
+        });
+    });
+}
+
+
 function updateModel(data) {
     var item = new TodoTxt.TodoTxtItem('test');
 
@@ -52,162 +77,137 @@ function updateModel(data) {
 
 
 /**
- * GET home page.
+ * App static URL (GET '/').
+ *
+ * @param {Object} req
+ * @param {Object} res
  */
 exports.index = function(req, res) {
     res.redirect('/index.html');
 };
 
+/**
+ * Writes temporary buffer into file.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ */
+exports.sync = function(req, res) {
+    updateFile();
 
+    res.json({
+        success: true,
+        data: tmpBuffer
+    });
+};
+
+/**
+ * Returns the list of tasks.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.list = function(req, res) {
     fs.readFile(cfg.fs.file, "ascii", function(err, data) {
         if (err) throw err;
+        tmpBuffer = parseFile(data);
 
         res.json({
             success: true,
-            data: parseFile(data)
+            data: tmpBuffer
         });
     });
 };
 
-
+/**
+ * Adds a new task to the list.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.add = function(req, res) {
-    var item = updateModel(req.body),
-        txtData = item.toString();
+    var item = updateModel(req.body);
 
-    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
-        if (err) throw err;
-        var nTasks = data.split("\n").length;
-        item.id = nTasks;
+    item.id = tmpBuffer.length + 1;
+    tmpBuffer.push(item);
+    if (cfg.fs.autoSave) updateFile();
+    console.log('Task #%s added: %o', item.id, item);
 
-        fs.open(cfg.fs.file, 'a', 666, function(err, fd) {
-            fs.write(fd, txtData + "\n", null, 'utf8', function(err) {
-                if (err) throw err;
-                //console.log("write to file");
-                fs.close(fd, function() {
-                    //console.log("file closed");
-                    res.json({
-                        success: true,
-                        data: item
-                    });
-                });
-            });
-        });
+    res.json({
+        success: true,
+        data: item
     });
 };
 
-
+/**
+ * Modifies a given task.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.update = function(req, res) {
-    var p = req.body,
-        updatedIdx = req.params.id - 1,
-        tmpItem, updatedItem,
-        offset = 0,
-        position = null;
+    var idx = req.params.id - 1,
+        item;
 
-    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
-        if (err) throw err;
+    if (tmpBuffer[idx]) {
+        item = updateModel(req.body);
 
-        fs.open(cfg.fs.file, "w+", function(err, fd) {
-            if (err) throw err;
+        tmpBuffer[idx] = item;
+        if (cfg.fs.autoSave) updateFile();
+        console.log('Task #%s updated: %o', idx, item);
+    }
 
-            _.each(parseFile(data), function(item, idx) {
-                if (idx === updatedIdx) {
-                    tmpItem = updateModel(p);
-                    updatedItem = tmpItem
-                } else {
-                    tmpItem = updateModel(item);
-                }
-
-                var buffer = new Buffer(tmpItem.toString() + "\n");
-                fs.write(fd, buffer, offset, buffer.length, position, function(error, written) {
-                    if (error) throw err;
-                    //console.log(idx + ' - Written ' + written + ' bytes to the file: ' + tmpItem.toString());
-                });
-            });
-
-            fs.close(fd, function() {
-                //console.log("file closed");
-                res.json({
-                    success: true,
-                    data: updatedItem
-                });
-            });
-        });
+    res.json({
+        success: true,
+        data: item
     });
 };
 
-
+/**
+ * Removes a task from the list.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.del = function(req, res) {
-    var p = req.body,
-        deletedIdx = req.params.id - 1,
-        tmpItem, deletedItem,
-        offset = 0,
-        position = null;
+    var idx = req.params.id - 1,
+        item = tmpBuffer[idx];
 
-    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
-        if (err) throw err;
+    if (item) {
+        delete tmpBuffer[idx];
+        if (cfg.fs.autoSave) updateFile();
+        console.log('Task #%s deleted: %o', idx, item);
+    }
 
-        fs.open(cfg.fs.file, "w+", function(err, fd) {
-            if (err) throw err;
-
-            _.each(parseFile(data), function(item, idx) {
-                if (idx !== deletedIdx) {
-                    tmpItem = updateModel(item);
-
-                    var buffer = new Buffer(tmpItem.toString() + "\n");
-                    fs.write(fd, buffer, offset, buffer.length, position, function(error, written) {
-                        if (error) throw err;
-                        //console.log(idx + ' - Written ' + written + ' bytes to the file: ' + tmpItem.toString());
-                    });
-                }
-            });
-
-            fs.close(fd, function() {
-                //console.log("file closed");
-                res.json({
-                    success: true
-                });
-            });
-        });
+    res.json({
+        success: true
     });
 };
 
-
+/**
+ * Marks / unmarks task as completed..
+ *
+ * @param {Object} req
+ * @param {Object} res
+ */
 exports.complete = function(req, res) {
-    var updatedIdx = req.params.id - 1,
-        tmpItem, updatedItem,
-        offset = 0,
-        position = null;
+    var idx = req.params.id - 1,
+        item,
+        isCompleted;
 
-    fs.readFile(cfg.fs.file, "ascii", function(err, data) {
-        if (err) throw err;
+    if (tmpBuffer[idx]) {
+        item = updateModel(tmpBuffer[idx]);
+        isCompleted = (item.complete);
+        item.complete = isCompleted? false : true;
+        item.completed = isCompleted? null : new Date();
 
-        fs.open(cfg.fs.file, "w+", function(err, fd) {
-            if (err) throw err;
+        tmpBuffer[idx] = item;
+        if (cfg.fs.autoSave) updateFile();
+        console.log('Task #%s completed: %o', idx, item);
+    }
 
-            _.each(parseFile(data), function(item, idx) {
-                tmpItem = updateModel(item);
-                if (idx === updatedIdx) {
-                    var isCompleted = (tmpItem.complete);
-                    updatedItem = tmpItem;
-                    updatedItem.complete =  isCompleted? false : true;
-                    updatedItem.completed = isCompleted? null : new Date();
-                }
-
-                var buffer = new Buffer(tmpItem.toString() + "\n");
-                fs.write(fd, buffer, offset, buffer.length, position, function(error, written) {
-                    if (error) throw err;
-                    //console.log(idx + ' - Written ' + written + ' bytes to the file: ' + tmpItem.toString());
-                });
-            });
-
-            fs.close(fd, function() {
-                //console.log("file closed");
-                res.json({
-                    success: true,
-                    data: updatedItem
-                });
-            });
-        });
+    res.json({
+        success: true,
+        data: item
     });
 };

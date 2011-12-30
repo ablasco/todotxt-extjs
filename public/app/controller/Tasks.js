@@ -8,7 +8,7 @@ Ext.define("TodoTxt.controller.Tasks", {
     stores: ['TreeNodes', 'Tasks', 'Priorities'],
     views:  ['Tree', 'Tasks'],
 
-    init: function () {
+    init: function() {
         this.control({
             'taskseditor': {
                 render: this.onEditorRender,
@@ -19,17 +19,20 @@ Ext.define("TodoTxt.controller.Tasks", {
             },
             '#newTask': {
                 click: this.addTask
+            },
+            '#syncFile': {
+                click: this.onSync
             }
         });
     },
 
-    onEditorRender: function () {
+    onEditorRender: function() {
         // cache a reference to the tasksEditor and rowEditor
         this.tasksEditor = Ext.ComponentQuery.query('taskseditor')[0];
         this.rowEditor = this.tasksEditor.rowEditor;
     },
 
-    onTaskEdit: function (evtData) {
+    onTaskEdit: function(evtData) {
         var s = this.getStore('Tasks');
         var record = s.getAt(evtData.rowIndex);
         if (record) {
@@ -37,12 +40,12 @@ Ext.define("TodoTxt.controller.Tasks", {
         }
     },
 
-    afterTaskEdit: function () {
+    afterTaskEdit: function() {
         var s = this.getStore('Tasks');
         s.sync();
     },
 
-    onTaskDelete: function (evtData) {
+    onTaskDelete: function(evtData) {
         var s = this.getStore('Tasks');
         var record = s.getAt(evtData.rowIndex);
         if (record) {
@@ -51,7 +54,7 @@ Ext.define("TodoTxt.controller.Tasks", {
         }
     },
 
-    onTaskComplete: function (evtData) {
+    onTaskComplete: function(evtData) {
         var s = this.getStore('Tasks'),
             record = s.getAt(evtData.rowIndex);
 
@@ -63,12 +66,28 @@ Ext.define("TodoTxt.controller.Tasks", {
         }
     },
 
-    addTask: function () {
+    addTask: function() {
         var newTask,
             s = this.getStore('Tasks');
 
         // add blank item to store -- will automatically add new row to grid
         newTask = s.add({text: ''})[0];
         this.rowEditor.startEdit(newTask, this.tasksEditor.columns[0]);
+    },
+
+    onSync: function() {
+        Ext.Ajax.request({
+            url: '/sync',
+            success: function(response) {
+                var text = response.responseText;
+                // process server response here
+                console.log(text);
+            },
+            failure: function(response) {
+                var text = response.responseText;
+                // process server response here
+                console.warn(text);
+            }
+        });
     }
 });
