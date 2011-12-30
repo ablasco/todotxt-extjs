@@ -18,10 +18,13 @@ Ext.define('TodoTxt.view.Viewport', {
             xtype: 'tbtext', cls: 'app-title',
             text: 'Todo.txt task editor'
         }, '->', {
-            id: 'newTask',
-            scale: 'large', width: 42, height: 42,
+            id: 'newTask', cls: 'btnHeader', scale: 'large',
             tooltip: 'Add new task',
             icon: 'images/_plus_big.png'
+        }, {
+            id: 'syncFile', cls: 'btnHeader', scale: 'large',
+            tooltip: 'File Syncronization',
+            icon: 'images/_sync_big.png'
         }]
     }, {
         region: 'west',

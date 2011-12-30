@@ -24,3 +24,6 @@
 .priority-D {color: cyan;}
 
 .x-tree-panel .x-grid-row .x-grid-cell-inner {height: 20px;}
+.x-grid-view .x-grid-row .x-grid-cell-inner {height: 20px;}
+
+.btnHeader { width: 32px; height: 32px; }
