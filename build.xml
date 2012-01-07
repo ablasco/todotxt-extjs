@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="build" basedir=".">
+
+    <property name="ant.project.name" value="todotxt" />
+
+    <target name="display">
+        <echo>Running build for ${ant.project.name}</echo>
+    </target>
+
+    <target name="clean">
+        <exec executable="rm">
+            <arg line="-fr ${basedir}/build" />
+        </exec>
+
+        <mkdir dir="${basedir}/build/api"/>
+        <mkdir dir="${basedir}/build/code-browser"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/logs"/>
+    </target>
+
+    <target name="documentation">
+        <exec executable="jsduck" dir="${basedir}">
+            <arg line="." />
+            <arg line="--output ${basedir}/build/api" />
+        </exec>
+    </target>
+
+    <target name="build" depends="display,clean,documentation" />
+    
+    <target name="doc" depends="clean,documentation" />
+
+</project>
