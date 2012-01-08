@@ -26,7 +26,17 @@
         </exec>
     </target>
 
-    <target name="build" depends="display,clean,documentation" />
+    <target name="violations">
+            <fileset dir="public" casesensitive="yes" id="jsfiles.raw">
+                <include name="**/*.js"/>
+            </fileset>
+	    <pathconvert pathsep=" " property="jsfiles.clean" refid="jsfiles.raw" />
+	    <exec executable="jshint" dir="${basedir}" output="${basedir}/build/logs/jshint.xml">
+            <arg line="${jsfiles.clean} --jslint-reporter"/>
+	    </exec>
+    </target>
+
+    <target name="build" depends="display,clean,violations,documentation" />
     
     <target name="doc" depends="clean,documentation" />
 
