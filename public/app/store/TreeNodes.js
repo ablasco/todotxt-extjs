@@ -1,5 +1,7 @@
 /**
- * The Tasks store
+ * Simple store of tree nodes for task categories.
+ * @class TodoTxt.store.TreeNodes
+ * @extends Ext.data.TreeStore
  */
 Ext.define('TodoTxt.store.TreeNodes', {
     extend: 'Ext.data.TreeStore',
@@ -16,10 +18,19 @@ Ext.define('TodoTxt.store.TreeNodes', {
         ]
     },
 
+    /**
+     * Basic initialization duties.
+     */
     initComponent: function () {
         this.callParent(arguments);
     },
 
+    /**
+     * Reloads all children nodes for a given tree node.
+     * @param {String} parentId Id for parent node.
+     * @param {Array} data Nodes to be loaded.
+     * @param cfg
+     */
     loadNodes: function(parentId, data, cfg) {
         var node = this.getNodeById(parentId);
 

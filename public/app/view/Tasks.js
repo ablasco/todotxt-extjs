@@ -1,5 +1,7 @@
 /**
- * The Grid of Movies
+ * Grid containing all tasks.
+ * @class TodoTxt.view.Tasks
+ * @extends Ext.grid.Panel
  */
 Ext.define('TodoTxt.view.Tasks', {
     extend: 'Ext.grid.Panel',
@@ -13,7 +15,10 @@ Ext.define('TodoTxt.view.Tasks', {
         clicksToEdit: 2
     }),
 
-    initComponent: function () {
+    /**
+     * Basic initialization duties.
+     */
+    initComponent: function() {
         var taskEditor = this;
         var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
             groupHeaderTpl: 'Group: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})'
@@ -64,7 +69,26 @@ Ext.define('TodoTxt.view.Tasks', {
             return output + '</span>';
         };
 
-        this.addEvents(['taskEdit', 'taskDelete', 'taskComplete']);
+        this.addEvents([
+        /**
+         * @event
+         * Fired when a task is edited.
+         */
+            'taskEdit',
+
+        /**
+         * @event
+         * Fired when a task is deleted.
+         */
+            'taskDelete',
+
+        /**
+         * @event
+         * Fired when a task is marked as complete.
+         */
+            'taskComplete'
+        ]);
+
         this.columns = [{
             header: 'Done', dataIndex: 'complete',
             flex: 0.5, hidden: true, renderer: rndBoolean,
@@ -141,7 +165,7 @@ Ext.define('TodoTxt.view.Tasks', {
         }];
 
         this.plugins = [this.rowEditor];
-        this.features = [groupingFeature],
+        this.features = [groupingFeature];
 /*
         this.dockedItems = [{
             xtype: 'toolbar',

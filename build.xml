@@ -12,6 +12,7 @@
         <exec executable="rm">
             <arg line="-fr ${basedir}/build" />
         </exec>
+        <echo>Cleaned old build.</echo>
 
         <mkdir dir="${basedir}/build/api"/>
         <mkdir dir="${basedir}/build/code-browser"/>
@@ -23,17 +24,18 @@
         <exec executable="jsduck" dir="${basedir}">
             <arg line="." />
             <arg line="--output ${basedir}/build/api" />
+            <arg line='--title "Todotxt-extjs documentation"' />
         </exec>
     </target>
 
     <target name="violations">
-            <fileset dir="public" casesensitive="yes" id="jsfiles.raw">
-                <include name="**/*.js"/>
-            </fileset>
-	    <pathconvert pathsep=" " property="jsfiles.clean" refid="jsfiles.raw" />
-	    <exec executable="jshint" dir="${basedir}" output="${basedir}/build/logs/jshint.xml">
+        <fileset dir="public" casesensitive="yes" id="jsfiles.raw">
+            <include name="**/*.js"/>
+        </fileset>
+        <pathconvert pathsep=" " property="jsfiles.clean" refid="jsfiles.raw" />
+        <exec executable="jshint" dir="${basedir}" output="${basedir}/build/logs/jshint.xml">
             <arg line="${jsfiles.clean} --jslint-reporter"/>
-	    </exec>
+        </exec>
     </target>
 
     <target name="build" depends="display,clean,violations,documentation" />

@@ -1,5 +1,7 @@
 /**
- * The Grid of Movies
+ * Category tree for task grid filtering.
+ * @class TodoTxt.view.Tree
+ * @extends Ext.tree.Panel
  */
 Ext.define('TodoTxt.view.Tree', {
     extend: 'Ext.tree.Panel',
@@ -10,6 +12,12 @@ Ext.define('TodoTxt.view.Tree', {
     store: 'TreeNodes',
     rootVisible: false,
     listeners: {
+        /**
+         * @event
+         * Filters grid contents by selected category.
+         * @param {Object} cmp Own component
+         * @param {Object} rec Task model selected
+         */
         'itemclick': function(cmp, rec) {
             var store = Ext.getStore('Tasks'),
                 text = rec.data.text,
@@ -20,6 +28,9 @@ Ext.define('TodoTxt.view.Tree', {
         }
     },
 
+    /**
+     * Basic initialization duties.
+     */
     initComponent: function () {
         this.callParent(arguments);
 
@@ -42,9 +53,9 @@ Ext.define('TodoTxt.view.Tree', {
             });
 
             // Reloading comboboxes options.
-            Ext.each(contexts, function(c) {lc.push({id: c, name: c})});
+            Ext.each(contexts, function(c) { lc.push({id: c, name: c}); });
             Ext.getStore('Contexts').loadData(lc);
-            Ext.each(projects, function(p) {lp.push({id: p, name: p})});
+            Ext.each(projects, function(p) { lp.push({id: p, name: p}); });
             Ext.getStore('Projects').loadData(lp);
         });
     }

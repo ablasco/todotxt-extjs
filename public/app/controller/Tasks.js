@@ -1,5 +1,7 @@
 /**
- * The Movies controller.
+ * Controller for tasks management.
+ * @class TodoTxt.controller.Tasks
+ * @extends Ext.app.Controller
  */
 Ext.define("TodoTxt.controller.Tasks", {
     extend: 'Ext.app.Controller',
@@ -32,6 +34,10 @@ Ext.define("TodoTxt.controller.Tasks", {
         this.rowEditor = this.tasksEditor.rowEditor;
     },
 
+    /**
+     * Edits a given task.
+     * @param {Object} evtData
+     */
     onTaskEdit: function(evtData) {
         var s = this.getStore('Tasks');
         var record = s.getAt(evtData.rowIndex);
@@ -40,11 +46,19 @@ Ext.define("TodoTxt.controller.Tasks", {
         }
     },
 
+    /**
+     * Callback for post-edit syncronization tasks.
+     * @param {Object} evtData
+     */
     afterTaskEdit: function() {
         var s = this.getStore('Tasks');
         s.sync();
     },
 
+    /**
+     * Removes a given task.
+     * @param {Object} evtData
+     */
     onTaskDelete: function(evtData) {
         var s = this.getStore('Tasks');
         var record = s.getAt(evtData.rowIndex);
@@ -54,6 +68,10 @@ Ext.define("TodoTxt.controller.Tasks", {
         }
     },
 
+    /**
+     * Marks a task as completed.
+     * @param {Object} evtData
+     */
     onTaskComplete: function(evtData) {
         var s = this.getStore('Tasks'),
             record = s.getAt(evtData.rowIndex);
@@ -66,6 +84,9 @@ Ext.define("TodoTxt.controller.Tasks", {
         }
     },
 
+    /**
+     * Creates a new task model.
+     */
     addTask: function() {
         var newTask,
             s = this.getStore('Tasks');
@@ -75,6 +96,9 @@ Ext.define("TodoTxt.controller.Tasks", {
         this.rowEditor.startEdit(newTask, this.tasksEditor.columns[0]);
     },
 
+    /**
+     * Syncronizes grid contents with server file.
+     */
     onSync: function() {
         Ext.Ajax.request({
             url: '/sync',

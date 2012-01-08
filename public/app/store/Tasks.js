@@ -1,5 +1,7 @@
 /**
- * The Tasks store
+ * The Tasks store.
+ * @class TodoTxt.store.Tasks
+ * @extends Ext.data.Store
  */
 Ext.define('TodoTxt.store.Tasks', {
     extend: 'Ext.data.Store',
@@ -8,6 +10,9 @@ Ext.define('TodoTxt.store.Tasks', {
     autoSync: false,
     //groupField: 'projects',
 
+    /**
+     * @cfg {Array} sorters Custom function to order tasks by priority.
+     */
     sorters: [{
         sorterFn: function(o1, o2) {
             var getRank = function(o) {
@@ -29,6 +34,9 @@ Ext.define('TodoTxt.store.Tasks', {
         }
     }],
 
+    /**
+     * @cfg {Array} fields
+     */
     fields: [
         'text',
         'priority',
@@ -39,6 +47,9 @@ Ext.define('TodoTxt.store.Tasks', {
         'projects'
     ],
 
+    /**
+     * @cfg {Object} proxy REST proxy for API communications.
+     */
     proxy: {
         type: 'rest',
         url: '/task/',
